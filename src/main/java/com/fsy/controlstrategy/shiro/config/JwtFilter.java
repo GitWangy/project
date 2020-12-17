@@ -53,7 +53,7 @@ public class JwtFilter extends AuthenticatingFilter {
             }
         }
         // 执行自动登录
-        return executeLogin(servletRequest, servletResponse);
+        return true;
     }
 
     /**

@@ -1,6 +1,6 @@
 package com.fsy.controlstrategy.controller.base;
 
-import com.fsy.controlstrategy.entity.enums.AreaAnalysisWebStatusEnum;
+import com.fsy.controlstrategy.entity.enums.ControlWebStatusEnum;
 
 public class BaseController {
     /**
@@ -11,7 +11,7 @@ public class BaseController {
      * @param <T>           数据对象类型参数
      * @return
      */
-    public <T> ResponseVo generateResponseVo(AreaAnalysisWebStatusEnum webStatusEnum, T data) {
+    public <T> ResponseVo generateResponseVo(ControlWebStatusEnum webStatusEnum, T data) {
         return new ResponseVo<>(webStatusEnum.getCode(), webStatusEnum.getDesc(), data);
     }
 

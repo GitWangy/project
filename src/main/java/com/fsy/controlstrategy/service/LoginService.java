@@ -1,8 +1,10 @@
 package com.fsy.controlstrategy.service;
 
-import com.fsy.controlstrategy.entity.ControlUser;
+import com.fsy.controlstrategy.entity.SysUser;
 
 public interface LoginService {
 
-    ControlUser getUserByUserInfo (ControlUser param);
+    SysUser getUserById (Long id);
+
+    SysUser getUserByUserName (String userName);
 }

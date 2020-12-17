@@ -1,6 +1,6 @@
 package com.fsy.controlstrategy.entity.enums;
 
-public enum AreaAnalysisWebStatusEnum {
+public enum ControlWebStatusEnum {
     SUCCESS("5000", "成功"),
     FAILED("7000", "失败"),
     PARAM_ERROR("7001", "参数错误"),
@@ -20,7 +20,7 @@ public enum AreaAnalysisWebStatusEnum {
     private String code;
     private String desc;
 
-    AreaAnalysisWebStatusEnum(String code, String desc) {
+    ControlWebStatusEnum(String code, String desc) {
         this.code = code;
         this.desc = desc;
     }

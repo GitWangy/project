@@ -1,13 +1,13 @@
 package com.fsy.controlstrategy.controller.login;
 
-import cn.hutool.core.map.MapUtil;
 import com.fsy.controlstrategy.controller.base.BaseController;
 import com.fsy.controlstrategy.controller.base.ResponseVo;
 import com.fsy.controlstrategy.controller.param.LoginParam;
-import com.fsy.controlstrategy.entity.ControlUser;
-import com.fsy.controlstrategy.entity.enums.AreaAnalysisWebStatusEnum;
+import com.fsy.controlstrategy.entity.SysUser;
+import com.fsy.controlstrategy.entity.enums.ControlWebStatusEnum;
 import com.fsy.controlstrategy.service.LoginService;
 import com.fsy.controlstrategy.util.JwtUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
+@Slf4j
 public class LoginController extends BaseController {
 
     @Autowired
@@ -34,14 +35,12 @@ public class LoginController extends BaseController {
     @RequestMapping("/login")
     public ResponseVo login (@RequestBody LoginParam loginParam, HttpServletResponse response) {
         if (StringUtils.isEmpty(loginParam) || StringUtils.isEmpty(loginParam.getUserName())) {
-            return generateResponseVo(AreaAnalysisWebStatusEnum.PARAM_ERROR,null);
+            return generateResponseVo(ControlWebStatusEnum.PARAM_ERROR,null);
         }
-        ControlUser controlUser = new ControlUser();
-        controlUser.setUserName(loginParam.getUserName());
 
-        ControlUser userInfo = loginService.getUserByUserInfo(controlUser);
+        SysUser userInfo = loginService.getUserByUserName(loginParam.getUserName());
         if (StringUtils.isEmpty(userInfo)) {
-            return  generateResponseVo(AreaAnalysisWebStatusEnum.USER_NO_LOGIN,null);
+            return  generateResponseVo(ControlWebStatusEnum.USER_NO_LOGIN,null);
         }
 
         String jwt = jwtUtils.generateToken(userInfo.getId());
@@ -49,16 +48,13 @@ public class LoginController extends BaseController {
         response.setHeader("Access-Control-Expose-Headers", "Authorization");
 
 
-        return generateResponseVo(AreaAnalysisWebStatusEnum.SUCCESS, MapUtil.builder()
-                .put("id", userInfo.getId())
-                .put("username", userInfo.getUserName())
-                .map());
+        return generateResponseVo(ControlWebStatusEnum.SUCCESS, userInfo);
     }
 
     @GetMapping("/logout")
     @RequiresAuthentication
     public ResponseVo logout() {
         SecurityUtils.getSubject().logout();
-        return generateResponseVo(AreaAnalysisWebStatusEnum.SUCCESS,null);
+        return generateResponseVo(ControlWebStatusEnum.SUCCESS,null);
     }
 }
