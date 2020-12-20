@@ -12,11 +12,9 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -32,6 +30,7 @@ public class LoginController extends BaseController {
      *
      * @return
      */
+    @CrossOrigin
     @RequestMapping("/login")
     public ResponseVo login (@RequestBody LoginParam loginParam, HttpServletResponse response) {
         if (StringUtils.isEmpty(loginParam) || StringUtils.isEmpty(loginParam.getUserName())) {
@@ -57,4 +56,19 @@ public class LoginController extends BaseController {
         SecurityUtils.getSubject().logout();
         return generateResponseVo(ControlWebStatusEnum.SUCCESS,null);
     }
+
+    @CrossOrigin
+    @GetMapping("/getUserInfo")
+    public ResponseVo getUserInfoByToken (HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        SysUser user = null;
+        try {
+            String userId = jwtUtils.getClaimByToken(token).getSubject();
+            user = loginService.getUserById(Long.valueOf(userId));
+        } catch (Exception e) {
+            return generateResponseVo(ControlWebStatusEnum.SHIRO_ERROR, null);
+        }
+        return generateResponseVo(ControlWebStatusEnum.SUCCESS, user);
+    }
+
 }

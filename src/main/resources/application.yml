@@ -31,3 +31,5 @@ controlstrategy:
     expire: 604800
     # header 名称
     header: token
+server:
+  port: 8081

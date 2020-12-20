@@ -15,6 +15,7 @@ public enum ControlWebStatusEnum {
     CUSTOM_EXCEPTION("9000", "参数格式错误"),
 
     USER_NO_LOGIN("1000","当前用户名不存在"),
+    SHIRO_ERROR("10001","shiro错误请联系管理员")
     ;
 
     private String code;
