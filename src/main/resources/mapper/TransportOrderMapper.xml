@@ -139,6 +139,21 @@
 
     <!-- 查询符合条件的订单信息 -->
     <select id="getAllTransportOrder" resultMap="BaseResultMap">
-    select * from transport_order where valid =1;
+    select * from transport_order where valid =1
+        <if test="startDate != null">
+            and order_date >= #{startDate}
+        </if>
+        <if test="endDate != null">
+            and order_date &lt;= #{endDate}
+        </if>
+        <if test="orderNumber != null">
+            and order_number = #{orderNumber}
+        </if>
+        <if test="supplierStation != null">
+            and supplier_station = #{supplierStation}
+        </if>
+        <if test="items != null">
+            and items = #{items}
+        </if>
   </select>
 </mapper>

@@ -8,6 +8,7 @@ import com.fsy.controlstrategy.entity.TransportOrder;
 import com.fsy.controlstrategy.entity.enums.ControlWebStatusEnum;
 import com.fsy.controlstrategy.service.TransportOrderService;
 import com.fsy.controlstrategy.util.ExportExcelUtils;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -29,9 +30,20 @@ public class TransOrderController extends BaseController {
 @Autowired
 private TransportOrderService transportOrderService;
 
-@RequestMapping("/getAllOrderBasicInfo")
-public ResponseVo getAllOrderBasicInfo (@RequestBody OrderParam orderParam) {
-    List<TransportOrder> list = transportOrderService.getAllTransportOrderInfo(orderParam);
-    return generateResponseVo(ControlWebStatusEnum.SUCCESS, list);
-}
+
+    /**
+     * 这个也可以自己定义分页方法，使用插件,会返回一些
+     * 无用的值，看起来比较乱
+     * @return
+     */
+    @RequestMapping("/getAllOrderBasicInfo")
+    @CrossOrigin
+    public ResponseVo getAllOrderBasicInfo (@RequestBody OrderParam orderParam) {
+        PageInfo<TransportOrder> list = transportOrderService.getAllOrderInfo(orderParam);
+        return generateResponseVo(ControlWebStatusEnum.SUCCESS, list);
+    }
+
+    public ResponseVo getAllSupplierStation () {
+        return null;
+    }
 }
