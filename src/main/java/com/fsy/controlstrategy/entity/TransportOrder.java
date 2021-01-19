@@ -1,5 +1,8 @@
 package com.fsy.controlstrategy.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -28,6 +31,7 @@ public class TransportOrder {
 
     private String supplierStation;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date orderDate;
 
     private Byte valid;

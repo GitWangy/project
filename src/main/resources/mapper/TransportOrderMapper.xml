@@ -20,17 +20,17 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <insert id="insert" parameterType="com.fsy.controlstrategy.entity.TransportOrder">
-    insert into transport_order (id, supperlier, license_number, 
-      order_number, items, specification, 
-      rough_weight, suttle, unit_price, 
-      total_amount_order, report_year, supplier_station, 
-      order_date, valid, create_time, 
+    insert into transport_order (id, supperlier, license_number,
+      order_number, items, specification,
+      rough_weight, suttle, unit_price,
+      total_amount_order, report_year, supplier_station,
+      order_date, valid, create_time,
       update_time)
-    values (#{id,jdbcType=INTEGER}, #{supperlier,jdbcType=VARCHAR}, #{licenseNumber,jdbcType=VARCHAR}, 
-      #{orderNumber,jdbcType=INTEGER}, #{items,jdbcType=VARCHAR}, #{specification,jdbcType=VARCHAR}, 
-      #{roughWeight,jdbcType=DECIMAL}, #{suttle,jdbcType=DECIMAL}, #{unitPrice,jdbcType=DECIMAL}, 
-      #{totalAmountOrder,jdbcType=DECIMAL}, #{reportYear,jdbcType=VARCHAR}, #{supplierStation,jdbcType=VARCHAR}, 
-      #{orderDate,jdbcType=TIMESTAMP}, #{valid,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
+    values (#{id,jdbcType=INTEGER}, #{supperlier,jdbcType=VARCHAR}, #{licenseNumber,jdbcType=VARCHAR},
+      #{orderNumber,jdbcType=INTEGER}, #{items,jdbcType=VARCHAR}, #{specification,jdbcType=VARCHAR},
+      #{roughWeight,jdbcType=DECIMAL}, #{suttle,jdbcType=DECIMAL}, #{unitPrice,jdbcType=DECIMAL},
+      #{totalAmountOrder,jdbcType=DECIMAL}, #{reportYear,jdbcType=VARCHAR}, #{supplierStation,jdbcType=VARCHAR},
+      #{orderDate,jdbcType=TIMESTAMP}, #{valid,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP},
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
     <insert id="insertSelective" parameterType="com.fsy.controlstrategy.entity.TransportOrder">

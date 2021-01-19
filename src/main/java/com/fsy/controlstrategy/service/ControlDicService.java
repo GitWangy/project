@@ -1,5 +1,6 @@
 package com.fsy.controlstrategy.service;
 
+import com.fsy.controlstrategy.controller.param.ControDicParam;
 import com.fsy.controlstrategy.entity.ControlDic;
 
 import java.util.List;
@@ -11,4 +12,6 @@ public interface ControlDicService {
      * @return
      */
     public List<ControlDic> getAllControlDicByType (String dicType);
+
+    public void addControlDic (ControDicParam controDicParam);
 }

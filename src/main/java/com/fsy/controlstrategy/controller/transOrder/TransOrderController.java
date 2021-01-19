@@ -3,6 +3,7 @@ package com.fsy.controlstrategy.controller.transOrder;
 import com.fsy.controlstrategy.controller.base.BaseController;
 import com.fsy.controlstrategy.controller.base.ResponseVo;
 import com.fsy.controlstrategy.controller.param.OrderParam;
+import com.fsy.controlstrategy.controller.vo.TransportOrderVo;
 import com.fsy.controlstrategy.entity.TransportOrder;
 import com.fsy.controlstrategy.entity.enums.ControlWebStatusEnum;
 import com.fsy.controlstrategy.service.TransportOrderService;
@@ -15,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class TransOrderController extends BaseController {
 
-@Autowired
-private TransportOrderService transportOrderService;
+    @Autowired
+    private TransportOrderService transportOrderService;
 
 
     /**
@@ -27,7 +28,7 @@ private TransportOrderService transportOrderService;
     @RequestMapping("/getAllOrderBasicInfo")
     @CrossOrigin
     public ResponseVo getAllOrderBasicInfo (@RequestBody OrderParam orderParam) {
-        PageInfo<TransportOrder> list = transportOrderService.getAllOrderInfo(orderParam);
+        PageInfo<TransportOrderVo> list = transportOrderService.getAllOrderInfo(orderParam);
         return generateResponseVo(ControlWebStatusEnum.SUCCESS, list);
     }
 

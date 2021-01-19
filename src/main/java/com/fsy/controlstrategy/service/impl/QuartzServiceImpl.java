@@ -1,6 +1,7 @@
 package com.fsy.controlstrategy.service.impl;
 
 import com.fsy.controlstrategy.controller.param.OrderParam;
+import com.fsy.controlstrategy.controller.vo.TransportOrderVo;
 import com.fsy.controlstrategy.entity.ControlQuartz;
 import com.fsy.controlstrategy.entity.TransportOrder;
 import com.fsy.controlstrategy.mapper.ControlQuartzMapper;
@@ -54,12 +55,12 @@ public class QuartzServiceImpl implements QuartzService {
         // 可以有效的防止漏数据的情况
         boolean hasMore = true;
         while (hasMore) {
-            List<TransportOrder> transportOrders = transportOrderMapper.getAllTransportOrder(orderParam);
+            List<TransportOrderVo> transportOrders = transportOrderMapper.getAllTransportOrder(orderParam);
             if (!CollectionUtils.isEmpty(transportOrders)) {
-                List<TransportOrder> errTransportOrder = calculateOrderAmount(transportOrders);
+                List<TransportOrderVo> errTransportOrder = calculateOrderAmount(transportOrders);
                 if (!CollectionUtils.isEmpty(errTransportOrder)) {
                     transportOrderMapper.updateTotalAmountOrderById(errTransportOrder);
-                    log.info("已更新错误计算，他们的id分别为:{}",errTransportOrder.stream().map(TransportOrder::getId).collect(Collectors.toList()));
+                    log.info("已更新错误计算，他们的id分别为:{}",errTransportOrder.stream().map(TransportOrderVo::getId).collect(Collectors.toList()));
                 }
             }
             hasMore = transportOrders.size() == limit;
@@ -76,8 +77,8 @@ public class QuartzServiceImpl implements QuartzService {
      * @param list
      * @return
      */
-    private List<TransportOrder> calculateOrderAmount(List<TransportOrder> list) {
-        List<TransportOrder> resultList = new ArrayList<>();
+    private List<TransportOrderVo> calculateOrderAmount(List<TransportOrderVo> list) {
+        List<TransportOrderVo> resultList = new ArrayList<>();
         if (CollectionUtils.isEmpty(list)) {
             return null;
         }
