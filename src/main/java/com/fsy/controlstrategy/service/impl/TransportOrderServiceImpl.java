@@ -11,7 +11,6 @@ import com.github.pagehelper.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import redis.clients.jedis.Response;
 
 import java.util.List;
 

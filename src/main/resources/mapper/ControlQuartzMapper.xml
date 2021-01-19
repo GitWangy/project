@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fsy.controlstrategy.mapper.ControlQuartzMapper">
+    <resultMap id="BaseResultMap" type="com.fsy.controlstrategy.entity.ControlQuartz">
+        <result column="id" jdbcType="BIGINT" property="id"/>
+        <result column="quartz_name" jdbcType="VARCHAR" property="quartzName"/>
+        <result column="quartz_table" jdbcType="VARCHAR" property="quartzTable"/>
+        <result column="quartz_class" jdbcType="VARCHAR" property="quartzClass"/>
+        <result column="quartz_time" jdbcType="VARCHAR" property="quartzTime"/>
+        <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime"/>
+        <result column="valid" jdbcType="TINYINT" property="valid"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <insert id="insert" parameterType="com.fsy.controlstrategy.entity.ControlQuartz">
+    insert into control_quartz (id, quartz_name, quartz_table, 
+      quartz_class, last_update_time, valid, 
+      update_time, create_time)
+    values (#{id,jdbcType=BIGINT}, #{quartzName,jdbcType=VARCHAR}, #{quartzTable,jdbcType=VARCHAR}, 
+      #{quartzClass,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, #{valid,jdbcType=TINYINT}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="com.fsy.controlstrategy.entity.ControlQuartz">
+        insert into control_quartz
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="quartzName != null">
+                quartz_name,
+            </if>
+            <if test="quartzTable != null">
+                quartz_table,
+            </if>
+            <if test="quartzClass != null">
+                quartz_class,
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time,
+            </if>
+            <if test="valid != null">
+                valid,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="quartzName != null">
+                #{quartzName,jdbcType=VARCHAR},
+            </if>
+            <if test="quartzTable != null">
+                #{quartzTable,jdbcType=VARCHAR},
+            </if>
+            <if test="quartzClass != null">
+                #{quartzClass,jdbcType=VARCHAR},
+            </if>
+            <if test="lastUpdateTime != null">
+                #{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="valid != null">
+                #{valid,jdbcType=TINYINT},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 查询定时任务的配置 -->
+    <select id="selectControlQuartzByParam" resultType="com.fsy.controlstrategy.entity.ControlQuartz">
+        select * from control_quartz where valid =1 and quartz_table = #{quartzTable} and quartz_class = #{quartzClass}
+    </select>
+    <!-- 更新lastUt -->
+    <update id="updateLastUtById" >
+        update control_quartz set last_update_time = #{lastUt},update_time = now() where id = #{id}
+    </update>
+</mapper>

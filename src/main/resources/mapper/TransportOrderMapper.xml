@@ -139,7 +139,7 @@
 
     <!-- 查询符合条件的订单信息 -->
     <select id="getAllTransportOrder" resultMap="BaseResultMap">
-    select * from transport_order where valid =1
+        select * from transport_order where valid =1
         <if test="startDate != null">
             and order_date >= #{startDate}
         </if>
@@ -155,5 +155,37 @@
         <if test="items != null">
             and items = #{items}
         </if>
-  </select>
+        <if test="lastUt !=null">
+            and update_time >= #{lastUt}
+        </if>
+        <if test="currentDate !=null">
+            and update_time &lt;= #{currentDate} and id > #{lastId} order by id desc
+        </if>
+        <if test="limit != null">
+            limit #{limit}
+        </if>
+    </select>
+
+    <!-- 批量更新错误的订单总额 -->
+    <update id="updateTotalAmountOrderById" parameterType="list">
+        update transport_order
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="total_amount_order =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.totalAmountOrder!=null">
+                        when id=#{item.id} then #{item.totalAmountOrder}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="update_time =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    when id=#{item.id} then now()
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item.id}
+        </foreach>
+    </update>
 </mapper>

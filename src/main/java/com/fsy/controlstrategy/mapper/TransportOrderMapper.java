@@ -16,4 +16,11 @@ public interface TransportOrderMapper {
      * @return
      */
     List<TransportOrder> getAllTransportOrder (OrderParam orderParam);
+
+    /**
+     * 批量更新订单信息
+     *
+     * @param items
+     */
+    void updateTotalAmountOrderById (List<TransportOrder> items);
 }

@@ -9,8 +9,19 @@ public class OrderParam implements Serializable {
     private Integer orderNumber;
     private String supplierStation;
     private String items;
-    private Integer limit = 5;
-    private Integer offset = 0;
+    private Integer limit;
+    private Integer offset;
+    private String lastUt;
+    private Long lastId;
+    private String currentDate;
+
+    public String getCurrentDate() {
+        return currentDate;
+    }
+
+    public void setCurrentDate(String currentDate) {
+        this.currentDate = currentDate;
+    }
 
     public Integer getLimit() {
         return limit;
@@ -66,5 +77,21 @@ public class OrderParam implements Serializable {
 
     public void setItems(String items) {
         this.items = items;
+    }
+
+    public String getLastUt() {
+        return lastUt;
+    }
+
+    public void setLastUt(String lastUt) {
+        this.lastUt = lastUt;
+    }
+
+    public Long getLastId() {
+        return lastId;
+    }
+
+    public void setLastId(Long lastId) {
+        this.lastId = lastId;
     }
 }
