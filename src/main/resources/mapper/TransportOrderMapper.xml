@@ -138,7 +138,7 @@
     </insert>
 
     <!-- 查询符合条件的订单信息 -->
-    <select id="getAllTransportOrder" resultMap="BaseResultMap">
+    <select id="getAllTransportOrder" resultType="com.fsy.controlstrategy.controller.vo.TransportOrderVo">
         select * from transport_order where valid =1
         <if test="startDate != null">
             and order_date >= #{startDate}
@@ -159,10 +159,7 @@
             and update_time >= #{lastUt}
         </if>
         <if test="currentDate !=null">
-            and update_time &lt;= #{currentDate} and id > #{lastId} order by id desc
-        </if>
-        <if test="limit != null">
-            limit #{limit}
+            and update_time &lt;= #{currentDate} and id > #{lastId} order by id desc  limit  #{limit}
         </if>
     </select>
 
