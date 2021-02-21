@@ -56,14 +56,14 @@ public class JwtFilter extends AuthenticatingFilter {
         return true;
     }
 
-    /**
+/*    *//**
      * 重写登录的全局异常
      * @param token
      * @param e
      * @param request
      * @param response
      * @return
-     */
+     *//*
     @Override
     protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request, ServletResponse response) {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
@@ -77,5 +77,5 @@ public class JwtFilter extends AuthenticatingFilter {
         } catch (IOException e1) {
         }
         return false;
-    }
+    }*/
 }

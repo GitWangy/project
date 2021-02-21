@@ -1,4 +1,4 @@
-package com.fsy.controlstrategy.util;
+package com.fsy.controlstrategy.util.excel;
 
 import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.ExcelWriter;
@@ -7,6 +7,7 @@ import com.alibaba.excel.metadata.Font;
 import com.alibaba.excel.metadata.Sheet;
 import com.alibaba.excel.metadata.TableStyle;
 import com.alibaba.excel.support.ExcelTypeEnum;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.poifs.filesystem.FileMagic;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,20 +17,22 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.util.List;
 
 /**
+ * @author wangyv
  * @project controlstrategy
  * @className ExcelUtil
  * @description
- * @author wangyv
  * @create 2021-01-20 10:22
  **/
+@Slf4j
 public class ExcelUtil {
     /**
      * 读取 Excel(多个 sheet)
      *
-     * @param excel 文件
+     * @param excel    文件
      * @param rowModel 实体类映射，继承 BaseRowModel 类
      * @return Excel 数据 list
      */
@@ -54,9 +57,9 @@ public class ExcelUtil {
     /**
      * 读取某个 sheet 的 Excel
      *
-     * @param excel 文件
+     * @param excel    文件
      * @param rowModel 实体类映射，继承 BaseRowModel 类
-     * @param sheetNo sheet 的序号 从1开始
+     * @param sheetNo  sheet 的序号 从1开始
      * @return Excel 数据 list
      */
     public static List<Object> readExcel(MultipartFile excel, BaseRowModel rowModel, int sheetNo) {
@@ -66,9 +69,9 @@ public class ExcelUtil {
     /**
      * 读取某个 sheet 的 Excel
      *
-     * @param excel 文件
-     * @param rowModel 实体类映射，继承 BaseRowModel 类
-     * @param sheetNo sheet 的序号 从1开始
+     * @param excel       文件
+     * @param rowModel    实体类映射，继承 BaseRowModel 类
+     * @param sheetNo     sheet 的序号 从1开始
      * @param headLineNum 表头行数，默认为1
      * @return Excel 数据 list
      */
@@ -88,11 +91,11 @@ public class ExcelUtil {
     /**
      * 导出 Excel ：一个 sheet，带表头
      *
-     * @param response HttpServletResponse
-     * @param list 数据 list，每个元素为一个 BaseRowModel
-     * @param fileName 导出的文件名
+     * @param response  HttpServletResponse
+     * @param list      数据 list，每个元素为一个 BaseRowModel
+     * @param fileName  导出的文件名
      * @param sheetName 导入文件的 sheet 名
-     * @param object 映射实体类，Excel 模型
+     * @param object    映射实体类，Excel 模型
      */
     public static void writeExcel(HttpServletResponse response, List<? extends BaseRowModel> list, String fileName,
                                   String sheetName, BaseRowModel object) {
@@ -115,11 +118,11 @@ public class ExcelUtil {
     /**
      * 导出 Excel ：多个 sheet，带表头
      *
-     * @param response HttpServletResponse
-     * @param list 数据 list，每个元素为一个 BaseRowModel
-     * @param fileName 导出的文件名
+     * @param response  HttpServletResponse
+     * @param list      数据 list，每个元素为一个 BaseRowModel
+     * @param fileName  导出的文件名
      * @param sheetName 导入文件的 sheet 名
-     * @param object 映射实体类，Excel 模型
+     * @param object    映射实体类，Excel 模型
      */
     public static ExcelWriterFactory writeExcelWithSheets(HttpServletResponse response,
                                                           List<? extends BaseRowModel> list, String fileName,
@@ -172,21 +175,22 @@ public class ExcelUtil {
             return response.getOutputStream();
         } catch (Exception e) {
 
-            throw new exportFundBudgetExcel("导出异常！");
+            log.info("导出异常！");
         }
+        return null;
     }
 
     /**
      * 返回 ExcelReader
      *
-     * @param excel 需要解析的 Excel 文件
+     * @param excel         需要解析的 Excel 文件
      * @param excelListener new ExcelListener()
      */
     private static ExcelReader getReader(MultipartFile excel, ExcelListener excelListener) {
         String filename = excel.getOriginalFilename();
 
         if (filename == null || (!filename.toLowerCase().endsWith(".xls") && !filename.toLowerCase().endsWith(".xlsx"))) {
-            throw new ExcelException("文件格式错误！");
+            log.info("文件格式错误！");
         }
         InputStream inputStream;
 
@@ -204,11 +208,11 @@ public class ExcelUtil {
     /**
      * 资金收支导出 Excel ：一个 sheet，带表头
      *
-     * @param response HttpServletResponse
-     * @param list 数据 list，每个元素为一个 BaseRowModel
-     * @param fileName 导出的文件名
+     * @param response  HttpServletResponse
+     * @param list      数据 list，每个元素为一个 BaseRowModel
+     * @param fileName  导出的文件名
      * @param sheetName 导入文件的 sheet 名
-     * @param object 映射实体类，Excel 模型
+     * @param object    映射实体类，Excel 模型
      */
     public static void exportFundBudgetExcel(HttpServletResponse response, List<? extends BaseRowModel> list,
                                              String fileName, String sheetName, BaseRowModel object) throws IOException {
@@ -261,12 +265,12 @@ public class ExcelUtil {
             if (FileMagic.OOXML.equals(fileMagic)) {
                 return ExcelTypeEnum.XLSX;
             }
-
-            throw new ExcelException("excelTypeEnum can not null");
+            log.info("excelTypeEnum can not null");
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        return null;
     }
 
     /**
@@ -289,4 +293,26 @@ public class ExcelUtil {
         return tableStyle;
     }
 
+    /**
+     * 导出文件时为Writer生成OutputStream.注意这个导出必须提前设置，否则不起效果
+     *
+     * @param fileName 文件名
+     * @param response response
+     * @return ""
+     */
+    public static OutputStream getOutputStreamFormat(String fileName,
+                                        HttpServletResponse response) throws Exception {
+        try {
+            fileName = URLEncoder.encode(fileName, "UTF-8");
+            response.setContentType("application/vnd.ms-excel");
+            response.setCharacterEncoding("utf8");
+            response.setHeader("Content-Disposition", "attachment; filename=" + fileName + ".xlsx");
+            response.setHeader("Pragma", "public");
+            response.setHeader("Cache-Control", "no-store");
+            response.addHeader("Cache-Control", "max-age=0");
+            return response.getOutputStream();
+        } catch (IOException e) {
+            throw new Exception("导出excel表格失败!", e);
+        }
+    }
 }
