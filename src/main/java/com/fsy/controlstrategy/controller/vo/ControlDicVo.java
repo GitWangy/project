@@ -1,29 +1,29 @@
-package com.fsy.controlstrategy.controller.param;
+package com.fsy.controlstrategy.controller.vo;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class ControDicParam implements Serializable {
-
+public class ControlDicVo implements Serializable {
     private Long id;
 
     private String dicName;
 
     private String dicCode;
 
-    private Integer dicType;
+    private String dicType;
 
-    private Integer valid;
+    private String valid;
 
     private Date createTime;
 
     private Date updateTime;
 
-    private Integer limit;
+    public Long getId() {
+        return id;
+    }
 
-    private Integer offset;
-
-    public ControDicParam() {
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDicName() {
@@ -42,19 +42,19 @@ public class ControDicParam implements Serializable {
         this.dicCode = dicCode;
     }
 
-    public Integer getDicType() {
+    public String getDicType() {
         return dicType;
     }
 
-    public void setDicType(Integer dicType) {
+    public void setDicType(String dicType) {
         this.dicType = dicType;
     }
 
-    public Integer getValid() {
+    public String getValid() {
         return valid;
     }
 
-    public void setValid(Integer valid) {
+    public void setValid(String valid) {
         this.valid = valid;
     }
 
@@ -72,29 +72,5 @@ public class ControDicParam implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
-    }
-
-    public Integer getOffset() {
-        return offset;
-    }
-
-    public void setOffset(Integer offset) {
-        this.offset = offset;
-    }
-
-    public Integer getLimit() {
-        return limit;
-    }
-
-    public void setLimit(Integer limit) {
-        this.limit = limit;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }

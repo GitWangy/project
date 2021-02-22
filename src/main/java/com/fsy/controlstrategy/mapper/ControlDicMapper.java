@@ -18,4 +18,10 @@ public interface ControlDicMapper {
     List<ControlDic> getAllControlDicByType (String dicType);
 
     void addControlDic (ControDicParam controDicParam);
+
+    List<ControlDic> getControlDicByParam (ControDicParam controDicParam);
+
+    void updateControlDic (ControDicParam controDicParam);
+
+    ControlDic getControlDicByid (Long id);
 }

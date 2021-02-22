@@ -82,4 +82,37 @@
       #{dicType,jdbcType=TINYINT}, #{valid,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP},
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
+
+
+  <select id="getControlDicByParam" resultType="com.fsy.controlstrategy.entity.ControlDic">
+    select * from control_dic where 1=1
+    <if test="dicType != null">
+      and dic_type = #{dicType}
+    </if>
+    <if test="dicName != null">
+      and dic_name = #{dicName}
+    </if>
+    <if test="valid != null">
+      and valid = #{valid}
+    </if>
+  </select>
+
+  <update id="updateControlDic" >
+    update control_dic
+    <trim prefix="set" suffixOverrides=",">
+      <if test="valid!=null"> valid = #{valid},</if>
+      <if test="dicName!=null">dic_name = #{dicName},</if>
+      <if test="dicType!=null">dic_type = #{dicType},</if>
+      <if test="dicCode!=null">dic_code = #{dicCode},</if>
+    </trim>
+    WHERE id=#{id}
+  </update>
+
+
+  <select id="getControlDicByid" resultType="com.fsy.controlstrategy.entity.ControlDic">
+    select * from control_dic where 1=1
+    <if test="id != null">
+      and id = #{id}
+    </if>
+  </select>
 </mapper>
