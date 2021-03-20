@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fsy.controlstrategy.mapper.ErrAmuntHistoryMapper">
+    <resultMap id="BaseResultMap" type="com.fsy.controlstrategy.entity.ErrAmuntHistory">
+        <result column="id" jdbcType="BIGINT" property="id"/>
+        <result column="transport_id" jdbcType="BIGINT" property="transportId"/>
+        <result column="transport_err_amount" jdbcType="DECIMAL" property="transportErrAmount"/>
+        <result column="transport_ok_amount" jdbcType="DECIMAL" property="transportOkAmount"/>
+    </resultMap>
+    <insert id="insert" parameterType="com.fsy.controlstrategy.entity.ErrAmuntHistory">
+    insert into err_amunt_history (transport_id, transport_err_amount,
+      transport_ok_amount)
+    values (#{transportId,jdbcType=BIGINT}, #{transportErrAmount,jdbcType=DECIMAL},
+      #{transportOkAmount,jdbcType=DECIMAL})
+  </insert>
+    <insert id="insertSelective" parameterType="com.fsy.controlstrategy.entity.ErrAmuntHistory">
+        insert into err_amunt_history
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="transportId != null">
+                transport_id,
+            </if>
+            <if test="transportErrAmount != null">
+                transport_err_amount,
+            </if>
+            <if test="transportOkAmount != null">
+                transport_ok_amount,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="transportId != null">
+                #{transportId,jdbcType=BIGINT},
+            </if>
+            <if test="transportErrAmount != null">
+                #{transportErrAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="transportOkAmount != null">
+                #{transportOkAmount,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="addErrHistory">
+        insert into err_amunt_history (transport_id, transport_err_amount,
+      transport_ok_amount)
+    values (#{transportId}, #{transportErrAmount},
+      #{transportOkAmount})
+  </insert>
+    <select id="getAllErrData" resultType="com.fsy.controlstrategy.entity.ErrAmuntHistory">
+    select * from err_amunt_history
+  </select>
+    <delete id="delAllErrData">
+    delete * from err_amunt_history
+  </delete>
+</mapper>
