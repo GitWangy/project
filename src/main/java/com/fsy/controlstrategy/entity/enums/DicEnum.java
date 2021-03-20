@@ -1,12 +1,12 @@
 package com.fsy.controlstrategy.entity.enums;
 
 public enum DicEnum {
-    DIC_PLACT_TYPE(1,"站点"),
-    DiC_TYPE(2,"品目");
-    private Integer dicCode;
+    DIC_PLACT_TYPE("1","站点"),
+    DiC_TYPE("2","品目");
+    private String dicCode;
     private String dicValue;
 
-    DicEnum(Integer dicCode, String dicValue) {
+    DicEnum(String dicCode, String dicValue) {
         this.dicCode = dicCode;
         this.dicValue = dicValue;
     }
@@ -14,11 +14,11 @@ public enum DicEnum {
     DicEnum() {
     }
 
-    public Integer getDicCode() {
+    public String getDicCode() {
         return dicCode;
     }
 
-    public void setDicCode(Integer dicCode) {
+    public void setDicCode(String dicCode) {
         this.dicCode = dicCode;
     }
 
@@ -30,12 +30,12 @@ public enum DicEnum {
         this.dicValue = dicValue;
     }
 
-    public static String getDicValueByCode (Integer dicCode) {
+    public static String getDicValueByCode (String dicCode) {
         if (dicCode == null) {
             return null;
         }
         for (DicEnum dicEnum : DicEnum.values()) {
-            Integer enumCode = dicEnum.getDicCode();
+            String enumCode = dicEnum.getDicCode().toString();
             if (enumCode.equals(dicCode)) {
                 return dicEnum.getDicValue();
             }

@@ -13,7 +13,7 @@ public class ControlQuartz {
 
     private String quartzTime;
 
-    private Date lastUpdateTime;
+    private String lastUpdateTime;
 
     private Integer valid;
 
@@ -53,11 +53,11 @@ public class ControlQuartz {
         this.quartzClass = quartzClass == null ? null : quartzClass.trim();
     }
 
-    public Date getLastUpdateTime() {
+    public String getLastUpdateTime() {
         return lastUpdateTime;
     }
 
-    public void setLastUpdateTime(Date lastUpdateTime) {
+    public void setLastUpdateTime(String lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
     }
 

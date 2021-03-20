@@ -24,4 +24,9 @@ public interface TransportOrderMapper {
      * @return
      */
     List<TransportOrderVo> getAllTransportOrder (OrderParam orderParam);
+
+    TransportOrder getTransPortOrderById (Integer id);
+
+    void updateTransPortOrder (TransportOrder transportOrder);
+
 }

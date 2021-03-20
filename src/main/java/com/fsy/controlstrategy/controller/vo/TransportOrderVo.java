@@ -53,4 +53,5 @@ public class TransportOrderVo extends BaseRowModel implements Serializable   {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date orderDate;
 
+    private BigDecimal totalAmount;
 }

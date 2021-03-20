@@ -1,10 +1,13 @@
 package com.fsy.controlstrategy.service.impl;
 
+import cn.hutool.core.util.NumberUtil;
 import com.fsy.controlstrategy.controller.param.OrderParam;
 import com.fsy.controlstrategy.controller.vo.TransportOrderVo;
 import com.fsy.controlstrategy.entity.ControlQuartz;
+import com.fsy.controlstrategy.entity.ErrAmuntHistory;
 import com.fsy.controlstrategy.entity.TransportOrder;
 import com.fsy.controlstrategy.mapper.ControlQuartzMapper;
+import com.fsy.controlstrategy.mapper.ErrAmuntHistoryMapper;
 import com.fsy.controlstrategy.mapper.TransportOrderMapper;
 import com.fsy.controlstrategy.service.QuartzService;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +42,9 @@ public class QuartzServiceImpl implements QuartzService {
     @Autowired
     private ControlQuartzMapper controlQuartzMapper;
 
+    @Autowired
+    private ErrAmuntHistoryMapper errAmuntHistoryMapper;
+
     @Override
     public void calculateOrderAmount(ControlQuartz quartz) {
         Integer limit = 1000;
@@ -50,7 +56,7 @@ public class QuartzServiceImpl implements QuartzService {
         orderParam.setLimit(limit);
         orderParam.setCurrentDate(formatDate);
         orderParam.setLastId(lastId);
-        orderParam.setLastUt(DateFormatUtils.format(quartz.getLastUpdateTime(),format));
+        orderParam.setLastUt(quartz.getLastUpdateTime());
         // AND update_time>=lastUt  AND update_time < now() AND abs_pf_project_id > id ORDER BY abs_pf_project_id asc LIMIT ?
         // 可以有效的防止漏数据的情况
         boolean hasMore = true;
@@ -94,6 +100,12 @@ public class QuartzServiceImpl implements QuartzService {
             if (storeTotal.compareTo(resultTotal) != 0) {
                 vo.setTotalAmountOrder(resultTotal);
                 resultList.add(vo);
+
+                ErrAmuntHistory errAmuntHistory = new ErrAmuntHistory();
+                errAmuntHistory.setTransportId(Long.valueOf(vo.getId()));
+                errAmuntHistory.setTransportErrAmount(storeTotal);
+                errAmuntHistory.setTransportOkAmount(resultTotal);
+                errAmuntHistoryMapper.insertSelective(errAmuntHistory);
             }
         });
         return resultList;

@@ -33,7 +33,7 @@ public class TransportOrder {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date orderDate;
 
-    private Byte valid;
+    private Integer valid;
 
     private Date createTime;
 
@@ -143,11 +143,11 @@ public class TransportOrder {
         this.orderDate = orderDate;
     }
 
-    public Byte getValid() {
+    public Integer getValid() {
         return valid;
     }
 
-    public void setValid(Byte valid) {
+    public void setValid(Integer valid) {
         this.valid = valid;
     }
 
@@ -166,4 +166,5 @@ public class TransportOrder {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
 }

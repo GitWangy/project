@@ -84,7 +84,20 @@
   </insert>
 
 
-  <select id="getControlDicByParam" resultType="com.fsy.controlstrategy.entity.ControlDic">
+  <select id="getCountControlDicByParam" resultType="int">
+    select count(*) from control_dic where 1=1
+    <if test="dicType != null">
+      and dic_type = #{dicType}
+    </if>
+    <if test="dicName != null">
+      and dic_name = #{dicName}
+    </if>
+    <if test="valid != null">
+      and valid = #{valid}
+    </if>
+  </select>
+
+  <select id="getControlDicByParam" resultType="com.fsy.controlstrategy.controller.vo.ControlDicVo">
     select * from control_dic where 1=1
     <if test="dicType != null">
       and dic_type = #{dicType}

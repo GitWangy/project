@@ -40,8 +40,7 @@ public class CalculateOrderAmountQuartz implements SchedulingConfigurer {
         String cronExpress = null;
         ControlQuartz quartz = controlQuartzMapper.selectControlQuartzByParam(param);
         if (StringUtils.isEmpty(quartz) || StringUtil.isEmpty(quartz.getQuartzTime())) {
-            cronExpress = "0 */1 * * * ?";
-            log.error("获取定时任务时间失败,使用默认的时间");
+           return;
         } else {
             cronExpress = quartz.getQuartzTime();
         }

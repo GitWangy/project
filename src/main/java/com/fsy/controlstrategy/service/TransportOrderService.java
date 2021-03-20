@@ -2,6 +2,7 @@ package com.fsy.controlstrategy.service;
 
 import com.fsy.controlstrategy.controller.param.OrderParam;
 import com.fsy.controlstrategy.controller.vo.TransportOrderVo;
+import com.fsy.controlstrategy.entity.ErrAmuntHistory;
 import com.fsy.controlstrategy.entity.TransportOrder;
 import com.github.pagehelper.PageInfo;
 
@@ -23,4 +24,10 @@ public interface TransportOrderService {
      * @return
      */
     List<TransportOrderVo> getExportOrderInfo (OrderParam orderParam);
+
+    void updateOrInsertTransportOrder (TransportOrder transportOrder);
+
+    TransportOrder getTransportOrderById (Integer id);
+
+    List<ErrAmuntHistory> getAllErrData();
 }

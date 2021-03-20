@@ -1,5 +1,6 @@
 package com.fsy.controlstrategy.service.impl;
 
+import cn.hutool.core.util.NumberUtil;
 import com.fsy.controlstrategy.controller.param.ControDicParam;
 import com.fsy.controlstrategy.controller.vo.ControlDicVo;
 import com.fsy.controlstrategy.controller.vo.TransportOrderVo;
@@ -14,6 +15,7 @@ import com.github.pagehelper.util.StringUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.NumberUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -58,28 +60,30 @@ public class ControlDicServiceImpl implements ControlDicService {
     @Override
     public PageInfo<ControlDicVo> getControlDic(ControDicParam controDicParam) {
         PageHelper.startPage(controDicParam.getOffset(), controDicParam.getLimit());
-        List<ControlDic> controlDicList = controlDicMapper.getControlDicByParam(controDicParam);
-        List<ControlDicVo> controlDicVos = new ArrayList<>();
-        for (ControlDic controlDic : controlDicList) {
+        PageInfo<ControlDicVo> list = new PageInfo<ControlDicVo>(controlDicMapper.getControlDicByParam(controDicParam));
+        List<ControlDicVo> controlDicList = list.getList();
+        for (ControlDicVo controlDic : controlDicList) {
             ControlDicVo controlDicVo = new ControlDicVo();
             BeanUtils.copyProperties(controlDic,controlDicVo);
             controlDicVo.setDicType(DicEnum.getDicValueByCode(controlDic.getDicType()));
             controlDicVo.setValid(ValidEnum.getValidValueByCode(controlDic.getValid()));
-            controlDicVos.add(controlDicVo);
         }
-        return new PageInfo<>(controlDicVos);
+        return list;
     }
 
     @Override
     public void updateControlDic(ControDicParam controDicParam) {
         if (!StringUtils.isEmpty(controDicParam)) {
-            ControlDic controlDic = controlDicMapper.getControlDicByid(controDicParam.getId());
-            if (controlDic != null) {
-                controlDicMapper.updateControlDic(controDicParam);
-            } else {
+            if (StringUtils.isEmpty(controDicParam.getId())) {
                 controlDicMapper.addControlDic(controDicParam);
+            } else {
+                ControlDic controlDic = controlDicMapper.getControlDicByid(controDicParam.getId());
+                if (controlDic != null) {
+                    controlDicMapper.updateControlDic(controDicParam);
+                } else {
+                    controlDicMapper.addControlDic(controDicParam);
+                }
             }
-
         }
     }
 
@@ -89,8 +93,8 @@ public class ControlDicServiceImpl implements ControlDicService {
             ControlDic controlDic = controlDicMapper.getControlDicByid(id);
             ControlDicVo controlDicVo = new ControlDicVo();
             BeanUtils.copyProperties(controlDic,controlDicVo);
-            controlDicVo.setDicType(DicEnum.getDicValueByCode(controlDic.getDicType()));
-            controlDicVo.setValid(ValidEnum.getValidValueByCode(controlDic.getValid()));
+            controlDicVo.setDicType(controlDic.getDicType().toString());
+            controlDicVo.setValid(controlDic.getValid().toString());
             return controlDicVo;
         }
         return null;

@@ -7,18 +7,25 @@ import com.fsy.controlstrategy.controller.base.BaseController;
 import com.fsy.controlstrategy.controller.base.ResponseVo;
 import com.fsy.controlstrategy.controller.param.OrderParam;
 import com.fsy.controlstrategy.controller.vo.TransportOrderVo;
+import com.fsy.controlstrategy.entity.ControlQuartz;
+import com.fsy.controlstrategy.entity.ErrAmuntHistory;
+import com.fsy.controlstrategy.entity.TransportOrder;
 import com.fsy.controlstrategy.entity.enums.ControlWebStatusEnum;
+import com.fsy.controlstrategy.mapper.ControlQuartzMapper;
+import com.fsy.controlstrategy.quartz.CalculateOrderAmountQuartz;
 import com.fsy.controlstrategy.service.TransportOrderService;
 import com.fsy.controlstrategy.util.excel.ExcelUtil;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -28,6 +35,11 @@ public class TransOrderController extends BaseController {
     @Autowired
     private TransportOrderService transportOrderService;
 
+    @Autowired
+    private CalculateOrderAmountQuartz calculateOrderAmountQuartz;
+
+    @Autowired
+    private ControlQuartzMapper controlQuartzMapper;
 
     /**
      * 这个也可以自己定义分页方法，使用插件,会返回一些
@@ -43,9 +55,10 @@ public class TransOrderController extends BaseController {
 
     @RequestMapping("/exportOrderInfo")
     @ResponseBody
-    public ResponseVo exportTransOrderExcel (HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @CrossOrigin
+    public ResponseVo exportTransOrderExcel (HttpServletRequest request, HttpServletResponse response,
+                                             @RequestBody OrderParam orderParam) throws Exception {
         OutputStream out = null;
-        OrderParam orderParam = new OrderParam();
         orderParam.setLimit(1000);
         orderParam.setOffset(0);
         String fileName = "我的导出魔板";
@@ -70,6 +83,39 @@ public class TransOrderController extends BaseController {
                 out.close();
             }
         }
+        return generateResponseVo(ControlWebStatusEnum.SUCCESS, null);
+    }
+
+
+    @RequestMapping("/updateOrInsertTransportOrder")
+    @CrossOrigin
+    public ResponseVo updateOrInsertTransportOrder (@RequestBody TransportOrder transportOrder) {
+        transportOrderService.updateOrInsertTransportOrder(transportOrder);
+        return generateResponseVo(ControlWebStatusEnum.SUCCESS, null);
+    }
+
+    @RequestMapping("/getTransPortOrderById")
+    @CrossOrigin
+    public ResponseVo getTransPortOrderById (Integer id) {
+        TransportOrder transportOrder = transportOrderService.getTransportOrderById(id);
+        return generateResponseVo(ControlWebStatusEnum.SUCCESS, transportOrder);
+    }
+
+    @RequestMapping("/getErrData")
+    @CrossOrigin
+    public ResponseVo getErrData () {
+        List<ErrAmuntHistory> list = transportOrderService.getAllErrData();
+        return generateResponseVo(ControlWebStatusEnum.SUCCESS, list);
+    }
+
+    @RequestMapping("/batchRunningData")
+    @CrossOrigin
+    public ResponseVo batchRunningData () {
+        ControlQuartz param = new ControlQuartz();
+        param.setQuartzTable("transport_order");
+        param.setQuartzClass("CalculateOrderAmountQuartz");
+        ControlQuartz quartz = controlQuartzMapper.selectControlQuartzByParam(param);
+        calculateOrderAmountQuartz.process(quartz);
         return generateResponseVo(ControlWebStatusEnum.SUCCESS, null);
     }
 }

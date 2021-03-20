@@ -42,7 +42,7 @@
         </javaClientGenerator>
         <!-- 指定数据库表 -->
         <!-- 指定每个表的生成策略 -->
-        <table tableName="control_dic"
+        <table tableName="err_amunt_history"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"

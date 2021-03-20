@@ -78,7 +78,7 @@
 
     <!-- 查询定时任务的配置 -->
     <select id="selectControlQuartzByParam" resultType="com.fsy.controlstrategy.entity.ControlQuartz">
-        select * from control_quartz where valid =1 and quartz_table = #{quartzTable} and quartz_class = #{quartzClass}
+        select id,quartz_time AS quartzTime,last_update_time AS lastUpdateTime from control_quartz where valid =1 and quartz_table = #{quartzTable} and quartz_class = #{quartzClass}
     </select>
     <!-- 更新lastUt -->
     <update id="updateLastUtById" >

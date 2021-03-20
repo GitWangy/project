@@ -185,4 +185,29 @@
             #{item.id}
         </foreach>
     </update>
+
+    <select id="getTransPortOrderById" resultType="com.fsy.controlstrategy.entity.TransportOrder">
+        select * from transport_order where valid =1 and id = #{id}
+    </select>
+    <update id="updateTransPortOrder">
+        update transport_order
+        <trim prefix="set" suffixOverrides=",">
+            <if test="valid!=null"> valid = #{valid},</if>
+            <if test="supperlier!=null">supperlier = #{supperlier},</if>
+            <if test="licenseNumber!=null">license_number = #{licenseNumber},</if>
+            <if test="orderNumber!=null">order_number = #{orderNumber},</if>
+            <if test="items!=null">items = #{items},</if>
+            <if test="specification!=null">specification = #{specification},</if>
+            <if test="roughWeight!=null">rough_weight = #{roughWeight},</if>
+            <if test="suttle!=null">suttle = #{dicCode},</if>
+            <if test="unitPrice!=null">unit_price = #{unitPrice},</if>
+            <if test="totalAmountOrder!=null">total_amount_order = #{totalAmountOrder},</if>
+            <if test="reportYear!=null">report_year = #{reportYear},</if>
+            <if test="supplierStation!=null">supplier_station = #{supplierStation},</if>
+            <if test="orderDate!=null">order_date = #{orderDate},</if>
+            <if test="createTime!=null">create_time = #{createTime},</if>
+            <if test="updateTime!=null">update_time = #{updateTime},</if>
+        </trim>
+        WHERE id=#{id}
+    </update>
 </mapper>
